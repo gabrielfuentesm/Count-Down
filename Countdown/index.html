@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Countdown Lanzamiento</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #1f2933, #020617);
+      color: #e5e7eb;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .container {
+      text-align: center;
+      padding: 2rem;
+    }
+
+    .title {
+      font-size: clamp(1.5rem, 3vw, 2.5rem);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: #9ca3af;
+      margin-bottom: 1.5rem;
+    }
+
+    .project-name {
+      font-size: clamp(2.5rem, 6vw, 4rem);
+      font-weight: 700;
+      margin-bottom: 2.5rem;
+      color: #f9fafb;
+    }
+
+    .countdown {
+      display: flex;
+      gap: clamp(1rem, 3vw, 2.5rem);
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .time-box {
+      min-width: 90px;
+      padding: 1.2rem 1.5rem;
+      border-radius: 1rem;
+      background: rgba(15, 23, 42, 0.85);
+      box-shadow:
+        0 10px 30px rgba(0, 0, 0, 0.5),
+        inset 0 0 0 1px rgba(148, 163, 184, 0.15);
+    }
+
+    .time-value {
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 700;
+      color: #38bdf8;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .time-label {
+      margin-top: 0.3rem;
+      font-size: 0.8rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #9ca3af;
+    }
+
+    .date-text {
+      margin-top: 2rem;
+      font-size: 0.9rem;
+      color: #9ca3af;
+    }
+
+    .finished {
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 600;
+      color: #4ade80;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="title">Countdown para</div>
+    <div class="project-name">Lanzamiento del proyecto</div>
+
+    <div id="countdown" class="countdown">
+      <div class="time-box">
+        <div id="days" class="time-value">0</div>
+        <div class="time-label">Días</div>
+      </div>
+      <div class="time-box">
+        <div id="hours" class="time-value">0</div>
+        <div class="time-label">Horas</div>
+      </div>
+      <div class="time-box">
+        <div id="minutes" class="time-value">0</div>
+        <div class="time-label">Minutos</div>
+      </div>
+      <div class="time-box">
+        <div id="seconds" class="time-value">0</div>
+        <div class="time-label">Segundos</div>
+      </div>
+    </div>
+
+    <div id="dateText" class="date-text"></div>
+  </div>
+
+  <script>
+    // Ajusta esta fecha/hora si quieres cambiar la hora exacta
+    // Año, Mes (0 = enero, 3 = abril), Día, Hora, Minuto, Segundo
+    const targetDate = new Date(2026, 3, 17, 0, 0, 0); // 17 abril 2026 00:00
+
+    const daysEl = document.getElementById("days");
+    const hoursEl = document.getElementById("hours");
+    const minutesEl = document.getElementById("minutes");
+    const secondsEl = document.getElementById("seconds");
+    const countdownEl = document.getElementById("countdown");
+    const dateTextEl = document.getElementById("dateText");
+
+    // Mostrar la fecha objetivo en texto
+    const options = { weekday: "long", year: "numeric", month: "long", day: "numeric" };
+    dateTextEl.textContent = "Hasta el " + targetDate.toLocaleDateString("es-ES", options);
+
+    function updateCountdown() {
+      const now = new Date().getTime();
+      const distance = targetDate.getTime() - now;
+
+      if (distance <= 0) {
+        countdownEl.innerHTML = '<div class="finished">¡Es el día del lanzamiento! 🚀</div>';
+        return;
+      }
+
+      const seconds = Math.floor(distance / 1000);
+      const days = Math.floor(seconds / (60 * 60 * 24));
+      const hours = Math.floor((seconds % (60 * 60 * 24)) / (60 * 60));
+      const minutes = Math.floor((seconds % (60 * 60)) / 60);
+      const secs = seconds % 60;
+
+      daysEl.textContent = days;
+      hoursEl.textContent = String(hours).padStart(2, "0");
+      minutesEl.textContent = String(minutes).padStart(2, "0");
+      secondsEl.textContent = String(secs).padStart(2, "0");
+    }
+
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+  </script>
+</body>
+</html>
